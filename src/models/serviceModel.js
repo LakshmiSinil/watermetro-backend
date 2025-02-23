@@ -1,9 +1,10 @@
+
 const ServiceSchema = new mongoose.Schema({
-    sid: { type: Number, unique: true, required: true },
-    rid: { type: mongoose.Schema.Types.Number, ref: "Route", required: true },
-    bid: { type: mongoose.Schema.Types.Number, ref: "Boat", required: true },
-    eid: { type: mongoose.Schema.Types.Number, ref: "Employee", required: true },
-  });
-  
-  module.exports = mongoose.model("Service", ServiceSchema);
-  
+  // all users ref should be changed to user employee
+  id: { type: mongoose.Schema.ObjectId, ref: "Employee", required: true },
+  serviceId: { type: Number, unique: true, required: true },
+  routeId: { type: mongoose.Schema.ObjectId, ref: "Route", required: true },
+  boatId: { type: mongoose.Schema.ObjectId, ref: "Boat", required: true },
+});
+
+module.exports = mongoose.model("Service", ServiceSchema);

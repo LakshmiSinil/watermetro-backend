@@ -1,9 +1,9 @@
 const RouteSchema = new mongoose.Schema({
-    rid: { type: Number, unique: true, required: true },
-    startfrom: { type: String, required: true },
-    to: { type: String, required: true },
-    status: { type: String, default: "Available" },
-  });
-  
-  module.exports = mongoose.model("Route", RouteSchema);
-  
+  id: { type: mongoose.Schema.ObjectId, unique: true, required: true },
+  from_location: { type: String, required: true },
+  to_location: { type: String, required: true },
+  // make status enum
+  status: { type: String, default: "available" },
+});
+
+module.exports = mongoose.model("Route", RouteSchema);

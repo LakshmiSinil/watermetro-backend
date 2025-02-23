@@ -1,9 +1,13 @@
-const User = require('../models/userModel');
+const User = require('./user.model');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { default: mongoose, Mongoose } = require('mongoose');
 
 exports.getUserById = async (id) => {
-    return await User.findById(id).select('-password');
+    
+    const user = await User.findById(id);
+console.log(user);
+    return user
 };
 
 
