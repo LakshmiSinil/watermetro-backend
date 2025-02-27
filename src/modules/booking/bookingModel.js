@@ -1,7 +1,10 @@
 const BookingSchema = new mongoose.Schema({
   id: { type: Number, unique: true, required: true },
-  userId: { type: mongoose.Schema.ObjectId, ref: "Public", required: true },
-  status: { type: String, default: "Pending" },
+  userId: { type: mongoose.Schema.ObjectId, ref: "user", required: true },
+  status: {
+    type: String,
+    enum: ["pending", "confirmed", "cancelled"], default: "pending"
+  },
   from_location: { type: String, required: true },
   to_location: { type: String, required: true },
 });

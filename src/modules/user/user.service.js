@@ -4,14 +4,10 @@ const jwt = require('jsonwebtoken');
 const { default: mongoose, Mongoose } = require('mongoose');
 
 exports.getUserById = async (id) => {
-    
     const user = await User.findById(id);
-console.log(user);
+    console.log(user);
     return user
 };
-
-
-
 exports.registerUser = async (req, res) => {
     try {
         const { name, email, password } = req.body;
