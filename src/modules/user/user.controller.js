@@ -1,6 +1,6 @@
 const express = require('express');
 // upate all import paths
-const { registerUser, loginUser, getUserById } = require('./user.service');
+const { registerUser, loginUser, getUserById,getAllUsers,updateUserById } = require('./user.service');
 
 const router = express.Router();
 
@@ -18,7 +18,6 @@ router.get('/:id', async (req, res) => {
 })
 // get a all user
 router.get("/", async (req, res) => {
-
     const users = await getAllUsers();
     console.log(users)
     res.json({ users });
@@ -26,16 +25,12 @@ router.get("/", async (req, res) => {
 // update a user
 router.patch("/:id", async (req, res) => {
     const updateUser = req.params.id
-    const updatedUser = await getUserById(updateUser);
+    const updatedUser = await updateUserById(updateUser);
     console.log(updateUser)
     res.json({ updatedUser });
 });
 
 module.exports = router;
-// /users/`746374683478374`
-// GET get all employees /
-// GET a user {param id}
-// PATCH update user
 
 
 

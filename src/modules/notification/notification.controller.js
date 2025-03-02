@@ -6,7 +6,7 @@ const {
     createNotification,
     updateNotificationById,
     deleteNotificationById
-} = require("../modules/notification/notification.service");
+} = require("../notification/notification.service");
 
 // GET ALL NOTIFICATIONS
 router.get("/", async (req, res) => {

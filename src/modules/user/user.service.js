@@ -1,13 +1,21 @@
 const User = require('./user.model');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { default: mongoose, Mongoose } = require('mongoose');
 
+// ✅ Get User by ID
 exports.getUserById = async (id) => {
     const user = await User.findById(id);
     console.log(user);
-    return user
+    return user;
 };
+
+// ✅ Get All Users
+exports.getAllUsers = async () => {
+    const users = await User.find();  // Fetch all users from MongoDB
+    return users;
+};
+
+// ✅ Register New User
 exports.registerUser = async (req, res) => {
     try {
         const { name, email, password } = req.body;
@@ -19,6 +27,7 @@ exports.registerUser = async (req, res) => {
     }
 };
 
+// ✅ User Login
 exports.loginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -31,4 +40,16 @@ exports.loginUser = async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
+};
+exports.updateUserById = async (id, updateData) => {
+    const updatedUser = await User.findByIdAndUpdate(id, updateData, { 
+        new: true, 
+        runValidators: true 
+    });
+
+    if (!updatedUser) {
+        throw new Error("User not found or update failed");
+    }
+    
+    return updatedUser;
 };

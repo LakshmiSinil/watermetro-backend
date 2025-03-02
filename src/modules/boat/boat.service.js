@@ -8,13 +8,11 @@ exports.getBoatById = async (id) => {
 };
 
 // Get all boats
-exports.getAllBoats = async (req, res) => {
-    try {
+exports.getAllBoats = async () => {
+
         const boats = await Boat.find();
-        res.status(200).json(boats);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+        return boats;
+    
 };
 
 // Update boat by ID
@@ -31,5 +29,11 @@ exports.deleteBoatById = async (id) => {
     return deletedBoat;
 };
 
+// Create a new boat
+exports.createBoat = async (boatData) => {
+    const newBoat = await Boat.create(boatData);
+    console.log(newBoat);
+    return newBoat;
+};
 
 

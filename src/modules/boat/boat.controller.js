@@ -1,5 +1,5 @@
 const express = require("express");
-const { getAllBoats, getBoatById, updateBoatById, deleteBoatById } = require("./boat.service");
+const { getAllBoats, getBoatById, updateBoatById, deleteBoatById,createBoat } = require("./boat.service");
 const router = express.Router();
 // GET ALL BOATS
 router.get("/", async (req, res) => {

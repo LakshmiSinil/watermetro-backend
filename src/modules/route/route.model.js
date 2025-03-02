@@ -1,12 +1,15 @@
+const mongoose = require('mongoose');
+
 const RouteSchema = new mongoose.Schema({
-  id: { type: mongoose.Schema.ObjectId, unique: true, required: true },
-  from_location: { type: String, required: true },
-  to_location: { type: String, required: true },
+  _id: { type: mongoose.Types.ObjectId },
+  fromLocation: { type: String, required: true },
+  toLocation: { type: String, required: true },
   status: {
     type: String,
     enum: ["available", "unavailable"],
     default: "available"
   }
 });
+
 
 module.exports = mongoose.model("Route", RouteSchema);

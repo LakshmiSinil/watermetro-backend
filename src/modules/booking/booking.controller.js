@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Booking = require("../modules/booking/booking.model");
-const { getBookingById } = require("../booking/booking.service");
+const { getAllBookings, getBookingById, updateBookingById, deleteBookingById,createBooking } = require("./booking.service");
 
 //  GET ALL BOOKINGS
 router.get("/", async (req, res) => {
@@ -26,17 +25,17 @@ router.get("/:id", async (req, res) => {
 router.post("/", async (req, res) => {
 
     const { userId, from_location, to_location, status } = req.body;
-    const newBooking = new Booking({ userId, from_location, to_location, status });
-    await newBooking.save();
+    const newBooking = await createBooking({ userId, from_location, to_location, status });
     console.log(newBooking)
     res.json({ newBooking });
 
 });
 
+
 //  UPDATE A BOOKING
 router.patch("/:id", async (req, res) => {
     const updatebooking = req.params.id
-    const updatedBooking = await getBookingById(updatebooking);
+    const updatedBooking = await updateBookingById(updatebooking);
     console.log(updatebooking)
     res.json({ updatedBooking });
 });

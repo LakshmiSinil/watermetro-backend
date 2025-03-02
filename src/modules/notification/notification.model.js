@@ -1,11 +1,11 @@
+const mongoose = require('mongoose');
 const NotificationSchema = new mongoose.Schema(
   {
     // all filed should  be camelcase
-    id: { type: Number, unique: true, required: true },
+    _id: { type: Number, unique: true, required: true },
     message: { type: String, required: true },
-    timestamps: true ,
     userId: { type: mongoose.Schema.ObjectId, ref: "user", required: true },
-  },
+  },{timestamps:true}
   // all models should have  timestamps: true
   
 );

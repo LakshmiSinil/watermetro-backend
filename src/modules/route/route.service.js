@@ -1,4 +1,4 @@
-const Route = require("./routes.model");
+const Route = require("./route.model");
 
 exports.getAllRoutes = async () => {
     const routes = await Route.find();
@@ -13,10 +13,11 @@ exports.getRouteById = async (id) => {
 exports.createRoute = async (routeData) => {
     const newRoute = await Route.create(routeData);
     return newRoute;
-};
+}
 
 exports.updateRouteById = async (id, updateData) => {
-    const updatedRoute = await Route.findByIdAndUpdate(id, updateData, { new: true });
+    const { toLocation, fromLocation, status } = updateData
+    const updatedRoute = await Route.findByIdAndUpdate(id, { toLocation, fromLocation, status }, { new: true });
     return updatedRoute;
 };
 

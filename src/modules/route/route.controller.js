@@ -1,6 +1,8 @@
+const mongoose = require('mongoose');
 const express = require("express");
 const router = express.Router();
-const Route = require("../modules/routes/routes.model");
+const Route = require("./route.model");
+const { getAllRoutes, getRouteById, updateRouteById, deleteRouteById } = require('./route.service');
 
 //  GET ALL ROUTES
 router.get("/", async (req, res) => {
@@ -28,9 +30,9 @@ router.post("/", async (req, res) => {
 
 // UPDATE A ROUTE
 router.patch("/:id", async (req, res) => {
-    const updateroute = req.params.id
-    const updatedRoute = await getRouteById(updateroute);
-    console.log(updateroute)
+    const routeId = req.params.id
+    const updatedRoute = await (routeId,req.body);
+    console.log(updatedroute)
     res.json({ updatedRoute });
 
 });
