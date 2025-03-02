@@ -30,11 +30,14 @@ router.post("/", async (req, res) => {
 
 // UPDATE A ROUTE
 router.patch("/:id", async (req, res) => {
-    const routeId = req.params.id
-    const updatedRoute = await (routeId,req.body);
-    console.log(updatedRoute)
-    res.json({ updatedRoute });
-
+    try {
+        const routeId = req.params.id
+        const updatedRoute = await updateRouteById(routeId, req.body);
+        res.json({ updatedRoute })
+    } catch (error) {
+        console.log("🚀 ~ router.patch ~ error:", error)
+        res.status(500).json({ message: "faild to update route" })
+    }
 });
 
 // DELETE A ROUTE
