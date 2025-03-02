@@ -32,7 +32,7 @@ router.post("/", async (req, res) => {
 router.patch("/:id", async (req, res) => {
     const routeId = req.params.id
     const updatedRoute = await (routeId,req.body);
-    console.log(updatedroute)
+    console.log(updatedRoute)
     res.json({ updatedRoute });
 
 });
