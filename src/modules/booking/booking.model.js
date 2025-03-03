@@ -11,12 +11,9 @@ const BookingSchema = new mongoose.Schema({
   passengerCount: { type: Number, required: true, default: 1 },
   type: {
     type: String,
-    enum: ["one-way",],
+    enum: ["one-way"],
     default: "one-way"
-  },
-
-
-
+  }
 }, { timestamps: true });
 
 module.exports = mongoose.model("Booking", BookingSchema);

@@ -23,9 +23,7 @@ router.get("/:id", async (req, res) => {
 
 // CREATE A NEW BOOKING
 router.post("/", async (req, res) => {
-
-    const { userId, from_location, to_location, status } = req.body;
-    const newBooking = await createBooking({ userId, from_location, to_location, status });
+    const newBooking = await createBooking(req.body);
     console.log(newBooking)
     res.json({ newBooking });
 

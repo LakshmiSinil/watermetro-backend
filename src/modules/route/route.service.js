@@ -11,8 +11,8 @@ exports.getRouteById = async (id) => {
 };
 
 exports.createRoute = async (routeData) => {
-    const { toLocation, fromLocation } = routeData
-    const newRoute = await Route.create({ toLocation, fromLocation });
+    const { toLocation, fromLocation,fare } = routeData
+    const newRoute = await Route.create({ toLocation, fromLocation,fare });
     return newRoute;
 }
 

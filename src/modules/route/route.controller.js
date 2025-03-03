@@ -22,7 +22,6 @@ router.get("/:id", async (req, res) => {
 // INSERT (CREATE) A NEW ROUTE
 router.post("/", async (req, res) => {
     const createdRoute = await createRoute(req.body)
-
     res.json({ message: "Route created successfully", route: createdRoute });
 
 });

@@ -3,9 +3,7 @@ const { getAllBoats, getBoatById, updateBoatById, deleteBoatById, createBoat } =
 const router = express.Router();
 // GET ALL BOATS
 router.get("/", async (req, res) => {
-
     const boats = await getAllBoats();
-    res.json(boats);
     console.log(boats)
     res.json({ boats });
 }

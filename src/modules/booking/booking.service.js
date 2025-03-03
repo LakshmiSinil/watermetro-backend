@@ -18,16 +18,11 @@ exports.getAllBookings = async (req, res) => {
 };
 
 // Create a new booking
-exports.createBooking = async (req, res) => {
-    try {
-        const { userId, from_location, to_location, status } = req.body;
-        const newBooking = await Booking.create({ userId, from_location, to_location, status });
-        res.status(201).json({ message: 'Booking created successfully', newBooking });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-};
-
+exports.createBooking = async (createData) => {
+    const { userId, serviceId, routeId, type, passengerCount, ispaid, status } = createData;
+    const newBooking = await Booking.create({ userId, serviceId, routeId, type, passengerCount, ispaid, status });
+    return newBooking
+}
 // Update a booking by ID
 exports.updateBookingById = async (id, updateData) => {
     const updatedBooking = await Booking.findByIdAndUpdate(id, updateData, { new: true });

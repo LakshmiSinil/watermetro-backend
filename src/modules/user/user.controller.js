@@ -11,8 +11,8 @@ router.post('/', (req, res) => {
 });
 // get user by id
 router.get('/:id', async (req, res) => {
-    const userid = req.params.id
-    const user = await getUserById(userid)
+    const userId = req.params.id
+    const user = await getUserById(userId)
     console.log(user)
     res.json({ user })
 })
