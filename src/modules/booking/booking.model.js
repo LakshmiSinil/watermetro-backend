@@ -3,10 +3,20 @@ const BookingSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.ObjectId, ref: "user", required: true },
   status: {
     type: String,
-    enum: ["pending", "confirmed", "cancelled"], default: "pending"
+    enum: ["confirmed", "cancelled", "used"], default: "confirmed"
   },
-  from_location: { type: String, required: true },
-  to_location: { type: String, required: true },
-});
+  ispaid: { type: Boolean, default: false },
+  routeId: { type: mongoose.Schema.Types.ObjectId, ref: 'Route', required: true },
+  serviceId: { type: mongoose.Schema.Types.ObjectId, ref: 'Service', required: true },
+  passengerCount: { type: Number, required: true, default: 1 },
+  type: {
+    type: String,
+    enum: ["one-way",],
+    default: "one-way"
+  },
+
+
+
+}, { timestamps: true });
 
 module.exports = mongoose.model("Booking", BookingSchema);

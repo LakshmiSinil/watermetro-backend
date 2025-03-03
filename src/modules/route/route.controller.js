@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const express = require("express");
 const router = express.Router();
 const Route = require("./route.model");
-const { getAllRoutes, getRouteById, updateRouteById, deleteRouteById } = require('./route.service');
+const { getAllRoutes, getRouteById, updateRouteById, deleteRouteById, createRoute } = require('./route.service');
 
 //  GET ALL ROUTES
 router.get("/", async (req, res) => {
@@ -21,10 +21,9 @@ router.get("/:id", async (req, res) => {
 
 // INSERT (CREATE) A NEW ROUTE
 router.post("/", async (req, res) => {
-    const { fromLocation, toLocation, status } = req.body;
-    const newRoute = new Route({ fromLocation, toLocation, status });
-    await newRoute.save();
-    res.json({ message: "Route created successfully", route: newRoute });
+    const createdRoute = await createRoute(req.body)
+
+    res.json({ message: "Route created successfully", route: createdRoute });
 
 });
 

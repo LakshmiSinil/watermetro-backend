@@ -1,5 +1,5 @@
 const express = require("express");
-const { getAllBoats, getBoatById, updateBoatById, deleteBoatById,createBoat } = require("./boat.service");
+const { getAllBoats, getBoatById, updateBoatById, deleteBoatById, createBoat } = require("./boat.service");
 const router = express.Router();
 // GET ALL BOATS
 router.get("/", async (req, res) => {
@@ -21,18 +21,18 @@ router.get("/:id", async (req, res) => {
 });
 // ADD A BOAT
 router.post("/", async (req, res) => {
-    const { name, type } = req.body; 
-    const newBoat = await createBoat({ name, type }); 
+    const newBoat = await createBoat(req.body);
     console.log(newBoat);
     res.json({ newBoat });
 });
 
 // UPDATE A BOAT
 router.patch("/:id", async (req, res) => {
-    const updateBoat = req.params.id
-    const updatedBoat = await updateBoatById(updateBoat);
-    console.log(updateBoat)
-
+    const boatId = req.params.id
+    console.log("🚀 ~ router.patch ~ boatId:", boatId)
+    console.log("🚀 ~ router.patch ~ req.body:", req.body)
+    const updatedBoat = await updateBoatById(boatId,req.body);
+    console.log(updatedBoat)
     res.json({ updatedBoat });
 
 });
