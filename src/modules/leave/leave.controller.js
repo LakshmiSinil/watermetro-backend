@@ -24,7 +24,6 @@ router.get("/:id", async (req, res) => {
 
 // CREATE A NEW LEAVE
 router.post("/", async (req, res) => {
- ;
     const newLeave = await createLeave(req.body);
     res.json({ message: "Leave created successfully", leave: newLeave });
 });

@@ -6,9 +6,7 @@ const router = express.Router();
 
 router.post('/register', registerUser);
 router.post('/login', loginUser);
-router.post('/', (req, res) => {
-    console.log(req.params)
-});
+
 // get user by id
 router.get('/:id', async (req, res) => {
     const userId = req.params.id

@@ -11,8 +11,8 @@ exports.getServiceById = async (id) => {
 };
 
 exports.createService = async (serviceData) => {
-    const { routeId, boatId } = serviceData
-    const newService = await Service.create({ routeId, boatId });
+    const { routeId, boatId,time } = serviceData
+    const newService = await Service.create({ routeId, boatId,time });
     return newService;
 };
 
