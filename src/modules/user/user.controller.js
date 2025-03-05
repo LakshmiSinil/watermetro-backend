@@ -10,7 +10,6 @@ router.post('/register', registerUser);
 router.post('/login', loginUser);
 
 router.get('/me', authenticate, async (req, res) => {
-    console.log('user', req.user)
     const user = await userModel.findById(req.user.userId)
     if (!user) res.status(404).json({ message: "User not found" })
     res.json({ user })
@@ -19,9 +18,10 @@ router.get('/me', authenticate, async (req, res) => {
 router.get('/:id', async (req, res) => {
     const userId = req.params.id
     const user = await getUserById(userId)
-    console.log(user)
+    if (!user) res.status(404).json({ message: "User not found" })
     res.json({ user })
 })
+
 // get a all user
 router.get("/", async (req, res) => {
     const users = await getAllUsers();
