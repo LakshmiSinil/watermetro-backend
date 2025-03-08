@@ -11,7 +11,6 @@ const {
 // GET ALL SERVICES
 router.get("/", async (req, res) => {
     const services = await getAllServices();
-    console.log(services);
     res.json({ services });
 });
 

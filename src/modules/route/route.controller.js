@@ -1,13 +1,10 @@
-const mongoose = require('mongoose');
 const express = require("express");
 const router = express.Router();
-const Route = require("./route.model");
 const { getAllRoutes, getRouteById, updateRouteById, deleteRouteById, createRoute } = require('./route.service');
 
 //  GET ALL ROUTES
 router.get("/", async (req, res) => {
     const routes = await getAllRoutes();
-    console.log(routes)
     res.json(routes);
 });
 
@@ -15,7 +12,6 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
     const routeid = req.params.id
     const route = await getRouteById(routeid);
-    console.log(route)
     res.json(route);
 });
 

@@ -4,9 +4,14 @@ const router = express.Router();
 // GET ALL BOATS
 router.get("/", async (req, res) => {
     const boats = await getAllBoats();
+
+   
     console.log(boats)
     res.json({ boats });
+    console.log("🚀 ~ router.get ~ res:", res)
+    
 }
+    
 );
 
 // GET ONE BOAT

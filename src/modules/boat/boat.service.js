@@ -10,8 +10,9 @@ exports.getBoatById = async (id) => {
 // Get all boats
 exports.getAllBoats = async () => {
 
-    const boats = await Boat.find();
+    const boats = await Boat.find().populate('userId').populate('routeId');
     return boats;
+    
 
 };
 
@@ -32,8 +33,8 @@ exports.deleteBoatById = async (id) => {
 
 // Create a new boat
 exports.createBoat = async (boatData) => {
-    const { name, routeId,userId } = boatData
-    const newBoat = await Boat.create({ name, routeId,userId });
+    const { name, routeId, userId } = boatData
+    const newBoat = await Boat.create({ name, routeId, userId });
     console.log(newBoat);
     return newBoat;
 };
