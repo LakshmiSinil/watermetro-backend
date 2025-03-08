@@ -1,12 +1,13 @@
 const Service = require("./service.model");
 
 exports.getAllServices = async () => {
-    const services = await Service.find().populate("routeId boatId");
+    const services = await Service.find().populate('boatId').populate('routeId');
     return services;
 };
+   
 
 exports.getServiceById = async (id) => {
-    const service = await Service.findById(id).populate("routeId boatId");
+    const service = await Service.findById(id);
     return service;
 };
 
@@ -17,7 +18,8 @@ exports.createService = async (serviceData) => {
 };
 
 exports.updateServiceById = async (id, updateData) => {
-    const updatedService = await Service.findByIdAndUpdate(id, updateData, { new: true }).populate(" routeId boatId");
+    const{routeId, boatId,time }=updateData
+    const updatedService = await Service.findByIdAndUpdate(id,{routeId, boatId,time }, { new: true });
     return updatedService;
 };
 
