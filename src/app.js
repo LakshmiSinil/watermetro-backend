@@ -10,10 +10,12 @@ const routeRoutes = require('./modules/route/route.controller');
 const serviceRoutes = require('./modules/service/service.controller');
 const winston = require('winston')
 const expressWinston = require('express-winston');
+const { globalErrorHandler } = require('./config/errorHandling');
 
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
+app.use(globalErrorHandler)
 
 
 app.use(expressWinston.logger({
@@ -21,10 +23,10 @@ app.use(expressWinston.logger({
         new winston.transports.Console()
     ],
     format: winston.format.printf(({ message }) => message),
-    meta: false, // Disabling extra meta data (like default response time, etc.)
+    meta: false,
     msg: "{{res.statusCode}} {{req.method}} {{req.url}}",
-    expressFormat: false, // Turn off express default format
-    colorize: false, // Keep it plain if you want to log to files later
+    expressFormat: false,
+    colorize: false, 
 }));
 
 app.use('/users', userRoutes);
