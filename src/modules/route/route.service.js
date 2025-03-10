@@ -17,8 +17,8 @@ exports.createRoute = async (routeData) => {
 }
 
 exports.updateRouteById = async (id, updateData) => {
-    const { toLocation, fromLocation, status } = updateData
-    const updatedRoute = await Route.findByIdAndUpdate(id, { toLocation, fromLocation, status }, { new: true });
+    const { toLocation, fromLocation, fare } = updateData
+    const updatedRoute = await Route.findByIdAndUpdate(id, { toLocation, fromLocation, fare }, { new: true });
     return updatedRoute;
 };
 

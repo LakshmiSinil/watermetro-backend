@@ -18,8 +18,8 @@ exports.getAllBoats = async () => {
 
 // Update boat by ID
 exports.updateBoatById = async (id, updateData) => {
-    const { name, routeId, status } = updateData
-    const updatedBoat = await Boat.findByIdAndUpdate(id, { name, routeId, status }, { new: true });
+    const { name, routeId,userId, status } = updateData
+    const updatedBoat = await Boat.findByIdAndUpdate(id, { name, routeId,userId, status }, { new: true });
     console.log(updatedBoat);
     return updatedBoat;
 };
