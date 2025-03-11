@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const { getAllBookings, getBookingById, updateBookingById, deleteBookingById,createBooking } = require("./booking.service");
+const { getAllBookings, getBookingById, updateBookingById, deleteBookingById, createBooking } = require("./booking.service");
+const { authenticate } = require("../../middlewares/authMiddleware");
 
 //  GET ALL BOOKINGS
 router.get("/", async (req, res) => {
@@ -22,8 +23,8 @@ router.get("/:id", async (req, res) => {
 });
 
 // CREATE A NEW BOOKING
-router.post("/", async (req, res) => {
-    const newBooking = await createBooking(req.body);
+router.post("/", authenticate, async (req, res) => {
+    const newBooking = await createBooking({ ...req.body, userId: req.user.userId });
     console.log(newBooking)
     res.json({ newBooking });
 
