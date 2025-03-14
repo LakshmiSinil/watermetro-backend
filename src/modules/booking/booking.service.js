@@ -2,19 +2,17 @@ const Booking = require('../booking/booking.model');
 
 // Get a booking by ID
 exports.getBookingById = async (id) => {
-    const booking = await Booking.findById(id);
+    const booking = await Booking.findById(id).populate("routeId").populate("serviceId").select("-userId")
     console.log(booking);
     return booking;
 };
 
 // Get all bookings
-exports.getAllBookings = async (req, res) => {
-    try {
-        const bookings = await Booking.find();
-        res.status(200).json(bookings);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+exports.getAllBookings = async () => {
+
+    const bookings = await Booking.find().populate('serviceId').populate('routeId');
+    return bookings;
+
 };
 
 // Create a new booking

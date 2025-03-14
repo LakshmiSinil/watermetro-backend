@@ -6,19 +6,16 @@ const { authenticate } = require("../../middlewares/authMiddleware");
 //  GET ALL BOOKINGS
 router.get("/", async (req, res) => {
 
-    const bookings = await getAllBookings()
-    res.json(bookings);
-    console.log(bookings)
-    res.json({ bookings })
-
+    const bookings = await getAllBookings();
+    res.json({ bookings });
 });
+
 
 //  GET ONE BOOKING BY ID
 router.get("/:id", async (req, res) => {
-    const bookingid = req.params.id
-    const booking = await getBookingById(bookingid);
-    console.log(booking)
-    res.json({ booking })
+    const bookingId = req.params.id
+    const booking = await getBookingById(bookingId);
+     res.json({ booking })
 
 });
 
