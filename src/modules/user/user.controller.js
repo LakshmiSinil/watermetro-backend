@@ -2,6 +2,7 @@ const express = require('express');
 const { registerUser, loginUser, getUserById, getAllUsers, updateUserById, createBulkUsers } = require('./user.service');
 const userModel = require('./user.model');
 const { authenticate } = require('../../middlewares/authMiddleware');
+const {createUser} =require('./user.service');
 
 const router = express.Router();
 
@@ -24,10 +25,28 @@ router.post('/bulk', async (req, res) => {
     }
 });
 
+router.post("/", async (req, res) => {
+    try {
+        const { name, email } = req.body;
 
-router.post("/",(req,res)=>{
-    // create user
-})
+        if (!name || !email) {
+            return res.status(400).json({ error: "Name and email are required." });
+        }
+
+        const user = await createUser({ name, email });
+
+        res.status(201).json({
+            message: "User created successfully.",
+            userDetails: { email: user.email, password: user.generatedPassword }
+        });
+    } catch (error) {
+        console.error("Error creating user:", error);
+        res.status(500).json({ error: "Failed to create user." });
+    }
+});
+
+
+
 router.post('/register', registerUser);
 router.post('/login', loginUser);
 

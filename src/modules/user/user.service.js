@@ -2,6 +2,7 @@ const User = require('./user.model');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { generateRandomPassword } = require('../../utils/generateRandomPassword');
+const { transporter } = require("../../utils/mailer")
 
 // ✅ Get User by ID
 exports.getUserById = async (id) => {
@@ -45,6 +46,40 @@ exports.loginUser = async (req, res) => {
     }
 };
 
+exports.createUser = async (userData) => {
+    try {
+        const { name, email } = userData;
+
+        if (!name || !email) {
+            throw new Error("Name and email are required");
+        }
+
+        const password = generateRandomPassword();
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const newUser = await User.create({
+            name,
+            email: email.toLowerCase(),
+            password: hashedPassword,
+            role: "employee",
+        });
+
+        console.log("Sending mail to", newUser.email);
+
+        await transporter.sendMail({
+            from: '"Admin" <admin@example.com>',
+            to: newUser.email,
+            subject: "Your Employee Account Credentials",
+            text: `Hello ${newUser.name},\n\nYour account has been created. Here are your login details:\n\nEmail: ${newUser.email}\nPassword: ${password}\n\nPlease change your password after logging in.`,
+        });
+
+        return newUser;
+    } catch (error) {
+        console.error("Failed to create user:", error);
+        throw new Error("User creation failed");
+    }
+};
+
 // ✅ Update User by ID
 exports.updateUserById = async (id, updateData) => {
     const updatedUser = await User.findByIdAndUpdate(id, updateData, {
@@ -62,23 +97,31 @@ exports.updateUserById = async (id, updateData) => {
 
 // ✅ Bulk User Creation
 exports.createBulkUsers = async (bulkData) => {
-    console.log("in create bulk service")
     const users = await Promise.all(bulkData.map(async (entry) => {
-        const password = generateRandomPassword();
-        const hashedPassword = await bcrypt.hash(password, 10);
+        try {
+            const password = generateRandomPassword();
+            const hashedPassword = await bcrypt.hash(password, 10);
+            const user = await User.create({
+                name: entry.name,
+                email: entry.email,
+                password: hashedPassword,
+                role: "employee",
+            });
+            console.log("sending mail to ", user.email)
+            await transporter.sendMail({
+                from: '"Admin" <admin@example.com>',
+                to: user.email,
+                subject: "Your Employee Account Credentials",
+                text: `Hello ${user.name},\n\nYour account has been created. Here are your login details:\n\nEmail: ${user.email}\nPassword: ${password}\n\nPlease change your password after logging in.`,
+            });
+            return user
+        } catch (error) {
+            console.error("Failed to create user in bulk ~ email:", entry.email)
+            return { ...entry, status: "failed" }
+        }
 
-        return {
-            email: entry.email,
-            password: hashedPassword,
-            plainPassword: password,
-            name: entry.name,
-            role: entry.role || "employee"
-        };
+
     }));
 
-    const insertManyRes = await User.insertMany(users.map(({ email, password, name, role }) => ({ email, role, password, name })));
-
-    console.log("🚀 ~ exports.createBulkUsers= ~ insertManyRes:", insertManyRes)
-    
-    return insertManyRes.map(({ email, name,role }) => ({ name, email,role }));
+    return users
 };
