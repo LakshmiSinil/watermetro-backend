@@ -1,6 +1,7 @@
 const User = require('./user.model');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { generateRandomPassword } = require('../../utils/generateRandomPassword');
 
 // ✅ Get User by ID
 exports.getUserById = async (id) => {
@@ -43,15 +44,41 @@ exports.loginUser = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+// ✅ Update User by ID
 exports.updateUserById = async (id, updateData) => {
     const updatedUser = await User.findByIdAndUpdate(id, updateData, {
         new: true,
         runValidators: true
     });
+    console.log("🚀 ~ updateUserById= ~ updatedUser:", updatedUser)
 
     if (!updatedUser) {
         throw new Error("User not found or update failed");
     }
 
     return updatedUser;
+};
+
+// ✅ Bulk User Creation
+exports.createBulkUsers = async (bulkData) => {
+    console.log("in create bulk service")
+    const users = await Promise.all(bulkData.map(async (entry) => {
+        const password = generateRandomPassword();
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        return {
+            email: entry.email,
+            password: hashedPassword,
+            plainPassword: password,
+            name: entry.name,
+            role: entry.role || "employee"
+        };
+    }));
+
+    const insertManyRes = await User.insertMany(users.map(({ email, password, name, role }) => ({ email, role, password, name })));
+
+    console.log("🚀 ~ exports.createBulkUsers= ~ insertManyRes:", insertManyRes)
+    
+    return insertManyRes.map(({ email, name,role }) => ({ name, email,role }));
 };

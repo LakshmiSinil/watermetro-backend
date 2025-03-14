@@ -14,7 +14,6 @@ router.get("/", async (req, res) => {
     const services = await getAllServices();
     console.log(services)
     res.json({ services });
-    console.log("🚀 ~ router.get ~ res:", res)
 });
 
 // GET A SINGLE SERVICE BY ID
