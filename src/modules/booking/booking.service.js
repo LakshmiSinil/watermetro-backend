@@ -3,14 +3,13 @@ const Booking = require('../booking/booking.model');
 // Get a booking by ID
 exports.getBookingById = async (id) => {
     const booking = await Booking.findById(id).populate("routeId").populate("serviceId").select("-userId")
-    console.log(booking);
     return booking;
 };
 
 // Get all bookings
-exports.getAllBookings = async () => {
+exports.getAllBookings = async (userId) => {
 
-    const bookings = await Booking.find().populate('serviceId').populate('routeId');
+    const bookings = await Booking.find(userId ? { userId } : {}).populate('serviceId').populate('routeId');
     return bookings;
 
 };
