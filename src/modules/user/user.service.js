@@ -12,8 +12,9 @@ exports.getUserById = async (id) => {
 };
 
 // ✅ Get All Users
-exports.getAllUsers = async () => {
-    const users = await User.find();  // Fetch all users from MongoDB
+exports.getAllUsers = async (role) => {
+    console.log("🚀 ~ exports.getAllUsers= ~ role:", role)
+    const users = await User.find(role?{role:role}:{});  // Fetch all users from MongoDB
     return users;
 };
 
@@ -23,7 +24,7 @@ exports.registerUser = async (req, res) => {
         const { name, email, password } = req.body;
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = await User.create({ name, email, password: hashedPassword });
-        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
+        const token = jwt.sign({ userId: user._id,role:user.role }, process.env.JWT_SECRET, { expiresIn: '1d' });
         res.status(201).json({ message: 'User registered successfully', user, token });
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -38,8 +39,7 @@ exports.loginUser = async (req, res) => {
         if (!user || !(await bcrypt.compare(password, user.password))) {
             return res.status(401).json({ message: 'Invalid credentials' });
         }
-
-        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
+        const token = jwt.sign({ userId: user._id,role:user.role }, process.env.JWT_SECRET, { expiresIn: '1d' });
         res.status(200).json({ message: 'Login successful', token, user });
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -80,13 +80,39 @@ exports.createUser = async (userData) => {
     }
 };
 
+exports.changeUserPassword = async (userId, currentPassword, newPassword) => {
+    try {
+        const user = await User.findById(userId);
+        if (!user) return { success: false, message: "User not found" };
+
+        console.log("🚀 ~ currentPassword:", currentPassword,newPassword)
+        // Verify current password
+        const isMatch = await bcrypt.compare(currentPassword, user.password);
+       
+        
+        if (!isMatch) return { success: false, message: "Incorrect current password" };
+
+        // Hash and update new password
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        console.log("🚀 ~ exports.changeUserPassword= ~ newPassword:")
+        user.password = hashedPassword;
+        await user.save();
+
+        return { success: true, message: "Password updated successfully" };
+    } catch (error) {
+        console.error("Error updating password:", error);
+        return { success: false, message: "Internal server error" };
+    }
+};
+
+
 // ✅ Update User by ID
 exports.updateUserById = async (id, updateData) => {
     const updatedUser = await User.findByIdAndUpdate(id, updateData, {
         new: true,
         runValidators: true
     });
-    console.log("🚀 ~ updateUserById= ~ updatedUser:", updatedUser)
+    
 
     if (!updatedUser) {
         throw new Error("User not found or update failed");
@@ -94,6 +120,7 @@ exports.updateUserById = async (id, updateData) => {
 
     return updatedUser;
 };
+
 
 // ✅ Bulk User Creation
 exports.createBulkUsers = async (bulkData) => {
