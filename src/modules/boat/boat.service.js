@@ -12,14 +12,18 @@ exports.getAllBoats = async () => {
 
     const boats = await Boat.find().populate('userId').populate('routeId');
     return boats;
-    
+
 
 };
 
+exports.getEmployeesBoat = async (employeeId) => {
+    return Boat.findOne({ userId: employeeId }).populate("routeId")
+}
+
 // Update boat by ID
 exports.updateBoatById = async (id, updateData) => {
-    const { name, routeId,userId, status } = updateData
-    const updatedBoat = await Boat.findByIdAndUpdate(id, { name, routeId,userId, status }, { new: true });
+    const { name, routeId, userId, status } = updateData
+    const updatedBoat = await Boat.findByIdAndUpdate(id, { name, routeId, userId, status }, { new: true });
     console.log(updatedBoat);
     return updatedBoat;
 };
