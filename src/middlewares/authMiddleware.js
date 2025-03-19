@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 
 const authenticate = (req, res, next) => {
     const authHeader = req.header('Authorization');
-    const token = authHeader.split(" ")[1]
+    const token = authHeader?.split(" ")[1]
     if (!token) return res.status(401).json({ message: 'Access Denied' });
 
     try {
@@ -22,19 +22,21 @@ function checkRole(allowedRoles = []) {
         if (!allowedRoles.includes(user.role)) {
             return res.status(403).json({ message: "Forbidden. You do not have access to this resource." });
         }
-
         next();
     };
 }
 
 const adminOnly = checkRole(['admin']);
+const employeeOnly = checkRole(['employee'])
 const adminOrEmployee = checkRole(['admin', 'employee']);
+
 
 
 
 
 module.exports = {
     adminOnly,
+    employeeOnly,
     adminOrEmployee,
-    authenticate
+    authenticate,
 };

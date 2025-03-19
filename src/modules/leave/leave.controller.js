@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const { authenticate } = require('../../middlewares/authMiddleware')
 const {
     getAllLeaves,
     getLeaveById,
@@ -11,7 +12,6 @@ const {
 // GET ALL LEAVES
 router.get("/", async (req, res) => {
     const leaves = await getAllLeaves();
-    console.log(leaves);
     res.json({ leaves });
 });
 
@@ -23,10 +23,11 @@ router.get("/:id", async (req, res) => {
 });
 
 // CREATE A NEW LEAVE
-router.post("/", async (req, res) => {
-    const newLeave = await createLeave(req.body);
+router.post("/",authenticate, async (req, res) => {
+    const newLeave = await createLeave({ ...req.body, userId: req.user.userId });
     res.json({ message: "Leave created successfully", leave: newLeave });
 });
+
 
 // UPDATE A LEAVE
 router.patch("/:id", async (req, res) => {

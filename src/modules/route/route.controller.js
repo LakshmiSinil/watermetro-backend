@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { getAllRoutes, getRouteById, updateRouteById, deleteRouteById, createRoute } = require('./route.service');
-
+const { authenticate, adminOrEmployee } = require('../../middlewares/authMiddleware');
 //  GET ALL ROUTES
 router.get("/", async (req, res) => {
     const routes = await getAllRoutes();
@@ -16,7 +16,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // INSERT (CREATE) A NEW ROUTE
-router.post("/", async (req, res) => {
+router.post("/", authenticate, adminOrEmployee, async (req, res) => {
     const createdRoute = await createRoute(req.body)
     res.json({ message: "Route created successfully", route: createdRoute });
 
