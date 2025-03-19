@@ -1,30 +1,40 @@
 const express = require("express");
 const router = express.Router();
+const { authenticate, adminOrEmployee } = require('../../middlewares/authMiddleware');
 const {
     getAllServices,
     getServiceById,
     createService,
     updateServiceById,
-    deleteServiceById
+    deleteServiceById,
+    getEmployeesServices
 } = require("./service.service");
 
 // GET ALL SERVICES
-router.get("/", async (req, res) => {
-    
+router.get("/", authenticate, adminOrEmployee, async (req, res) => {
     const services = await getAllServices();
-    console.log(services)
     res.json({ services });
 });
 
+// router.get("/mine", authenticate, adminOrEmployee, async (req, res) => {
+//     const user=req.user
+//     const services = await getEmployeesServices(user.userId);
+//     res.json({ services });
+// });
+
+
+
+
 // GET A SINGLE SERVICE BY ID
-router.get("/:id", async (req, res) => {
+router.get("/:id", authenticate, async (req, res) => {
     const service = await getServiceById(req.params.id);
-    console.log(service);
     res.json({ service });
 });
 
+
+
 // CREATE A NEW SERVICE
-router.post("/", async (req, res) => {
+router.post("/", authenticate, adminOrEmployee, async (req, res) => {
     const newService = await createService(req.body);
     res.json({ message: "Service created successfully", service: newService });
 });
@@ -32,7 +42,6 @@ router.post("/", async (req, res) => {
 // UPDATE A SERVICE
 router.patch("/:id", async (req, res) => {
     const updatedService = await updateServiceById(req.params.id, req.body);
-    console.log(updatedService);
     res.json({ updatedService });
 });
 
