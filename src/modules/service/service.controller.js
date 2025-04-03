@@ -11,7 +11,7 @@ const {
 } = require("./service.service");
 
 // GET ALL SERVICES
-router.get("/", authenticate, adminOrEmployee, async (req, res) => {
+router.get("/", authenticate, async (req, res) => {
     const services = await getAllServices();
     res.json({ services });
 });

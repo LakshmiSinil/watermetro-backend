@@ -6,14 +6,29 @@ exports.getAllServices = async () => {
     return services;
 };
 
-// exports.getEmployeesServices = async (employeeId) => {
-//     console.log("🚀 = ~ employeeId:", employeeId)
-//     const allServices = await Service.find()
-//     // await allServices.populate('boatId')
-//     // await allServices.populate('routeId');
-//     console.log('service', allServices[0]) 
-//     return allServices.filter(service => service.boatId?.userId?.toString() === employeeId)
-// }
+// exports.getUserServices = async (userId) => {
+//     try {
+//         // Find boats assigned to the user (employee)
+//         const boats = await boats.find({ userId }).select('_id');
+        
+//         if (!boats.length) {
+//             return { message: "No services found for this user." };
+//         }
+
+//         // Extract boat IDs
+//         const boatIds = boats.map(boat => boat._id);
+
+//         // Find services related to the user's boats
+//         const services = await Service.find({ boatId: { $in: boatIds } })
+//             .populate('routeId', 'name')
+//             .populate('boatId', 'name');
+
+//         return services;
+//     } catch (error) {
+//         console.error("Error fetching user services:", error);
+//         throw new Error("Failed to fetch user services.");
+//     }
+// };
 
 exports.getServiceById = async (id) => {
     const service = await Service.findById(id);
